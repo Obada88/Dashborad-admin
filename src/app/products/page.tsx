@@ -1,5 +1,6 @@
 'use client'
 
+import { Suspense } from "react"
 import { ProductsTable } from "@/components/products/products-table"
 import { AddProductDialog } from "@/components/products/add-product-dialog"
 import {
@@ -23,7 +24,7 @@ const categories = [
   "Storage"
 ]
 
-export default function ProductsPage() {
+function ProductsContent() {
   const products = useProducts((state) => state.products)
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -89,5 +90,13 @@ export default function ProductsPage() {
       </div>
       <ProductsTable />
     </div>
+  )
+}
+
+export default function ProductsPage() {
+  return (
+    <Suspense fallback={<div className="h-full p-6">Loading products...</div>}>
+      <ProductsContent />
+    </Suspense>
   )
 } 
