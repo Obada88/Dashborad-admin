@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from "react"
+import { useState, Suspense } from "react"
 import {
   Table,
   TableBody,
@@ -24,7 +24,7 @@ import {
 import { UpdateCustomerDialog } from "./update-customer-dialog"
 import { Button } from "@/components/ui/button"
 
-export function CustomersTable() {
+function CustomersTableContent() {
   const customers = useCustomers((state) => state.customers)
   const deleteCustomer = useCustomers((state) => state.deleteCustomer)
   const [searchQuery, setSearchQuery] = useState("")
@@ -168,4 +168,12 @@ export function CustomersTable() {
       )}
     </div>
   )
-} 
+}
+
+export function CustomersTable() {
+  return (
+    <Suspense fallback={<div className="p-4 text-center">Loading customer data...</div>}>
+      <CustomersTableContent />
+    </Suspense>
+  )
+}
