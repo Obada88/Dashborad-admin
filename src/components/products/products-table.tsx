@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from "react"
+import { useState, Suspense } from "react"
 import {
   Table,
   TableBody,
@@ -24,7 +24,7 @@ import { UpdateProductDialog } from "./update-product-dialog"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 
-export function ProductsTable() {
+function ProductsTableContent() {
   const products = useProducts((state) => state.products)
   const deleteProduct = useProducts((state) => state.deleteProduct)
   const [searchQuery, setSearchQuery] = useState("")
@@ -160,4 +160,12 @@ export function ProductsTable() {
       )}
     </div>
   )
-} 
+}
+
+export function ProductsTable() {
+  return (
+    <Suspense fallback={<div className="p-4 text-center">Loading product data...</div>}>
+      <ProductsTableContent />
+    </Suspense>
+  )
+}
